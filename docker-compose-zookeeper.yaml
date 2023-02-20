@@ -1,0 +1,79 @@
+---
+version: "3.8"
+
+
+x-kafka-common:
+  &kafka-common
+  image: kafka-base:3.4.0
+  # build:
+  #   context: .
+  #   dockerfile: base.Dockerfile
+  networks:
+    - main-network
+  env_file:
+    - ./kafka.env
+  restart: always
+
+
+services:
+
+  zookeeper:
+    <<: *kafka-common
+    container_name: zookeeper
+    command: zookeeper
+    environment:
+      CONF_ZOOKEEPER_clientPort: 2181
+      CONF_ZOOKEEPER_dataDir: /tmp/logs
+      CONF_ZOOKEEPER_tickTime: 60000
+      CONF_ZOOKEEPER_maxSessionTimeout: 300000
+      CONF_ZOOKEEPER_jute_maxbuffer: 0x9fffff
+    ports:
+      - target: 2181
+        published: 2181
+        mode: host
+    volumes:
+      - type: volume
+        source: zookeeper-volume
+        target: /tmp/logs
+
+  kafka:
+    <<: *kafka-common
+    container_name: kafka
+    command: kafka
+    environment:
+      SERVICE_PRECONDITION: "zookeeper:2181"
+      CONF_SERVER_broker_id: 1
+      CONF_SERVER_log_dirs: /tmp/logs
+      CONF_SERVER_zookeeper_connect: zookeeper:2181      
+      CONF_SERVER_listeners: INTERNAL://kafka:9094,EXTERNAL://kafka:9092
+      CONF_SERVER_advertised_listeners: INTERNAL://kafka:9094,EXTERNAL://kafka:9092
+      CONF_SERVER_listener_security_protocol_map: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      CONF_SERVER_inter_broker_listener_name: INTERNAL
+      CONF_SERVER_message_max_bytes: 10485760
+      CONF_SERVER_replica_fetch_max_bytes: 10485760
+    ports:
+      - target: 9092
+        published: 9092
+        mode: host
+      - target: 9094
+        published: 9094
+        mode: host
+    volumes:
+      - type: volume
+        source: kafka-volume
+        target: /tmp/logs
+    depends_on:
+      - zookeeper
+
+
+networks:
+  main-network:
+    name: main-network
+    external: false
+    driver: bridge
+    attachable: false
+
+
+volumes:
+  kafka-volume:
+  zookeeper-volume:

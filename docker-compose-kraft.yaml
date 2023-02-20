@@ -1,0 +1,41 @@
+---
+version: "3.8"
+
+
+services:
+
+  kafka:
+    image: kafka-base:3.4.0
+    # build:
+    #   context: .
+    #   dockerfile: base.Dockerfile
+    container_name: kafka
+    command: kafka-kraft
+    ports:
+      - target: 9092
+        published: 9092
+        mode: host
+      - target: 9093
+        published: 9093
+        mode: host
+    volumes:
+      - type: volume
+        source: kafka-volume
+        target: /tmp/logs
+    networks:
+      - main-network
+    env_file:
+      - ./kafka.env
+    restart: always
+
+
+networks:
+  main-network:
+    name: main-network
+    external: false
+    driver: bridge
+    attachable: false
+
+
+volumes:
+  kafka-volume:
