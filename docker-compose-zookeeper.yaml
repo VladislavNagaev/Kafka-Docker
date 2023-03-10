@@ -8,6 +8,7 @@ x-kafka-common:
   # build:
   #   context: .
   #   dockerfile: base.Dockerfile
+  hostname: kafka
   networks:
     - main-network
   env_file:

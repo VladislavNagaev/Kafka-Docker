@@ -10,6 +10,7 @@ services:
     #   context: .
     #   dockerfile: base.Dockerfile
     container_name: kafka
+    hostname: kafka
     command: kafka-kraft
     ports:
       - target: 9092

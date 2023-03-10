@@ -1,30 +1,29 @@
 #!/bin/bash
 
-COMMAND="${1:-}"
-
+COMMAND="${1:-}";
 
 if [ "${COMMAND}" == "kafka-kraft" ]; then
 
-    echo "Ending Kafka with KRaft ..."
+    echo -e "${blue_b}Ending Kafka with KRaft ...${reset_font}";
 
-    ${KAFKA_HOME}/bin/kafka-server-stop.sh
+    ${KAFKA_HOME}/bin/kafka-server-stop.sh;
 
-fi
+fi;
 
 if [ "${COMMAND}" == "kafka" ]; then
 
-    echo "Ending Kafka ..."
+    echo -e "${blue_b}Ending Kafka ...${reset_font}";
 
-    ${KAFKA_HOME}/bin/kafka-server-stop.sh
+    ${KAFKA_HOME}/bin/kafka-server-stop.sh;
 
-fi
+fi;
 
 if [ "${COMMAND}" == "zookeeper" ]; then
 
-    echo "Ending ZooKeeper ..."
+    echo -e "${blue_b}Ending ZooKeeper ...${reset_font}";
 
-    ${KAFKA_HOME}/bin/zookeeper-server-stop.sh
+    ${KAFKA_HOME}/bin/zookeeper-server-stop.sh;
 
-fi
+fi;
 
-exit $?
+exit $?;
