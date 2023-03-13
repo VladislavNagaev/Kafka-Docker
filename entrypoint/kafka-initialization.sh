@@ -12,8 +12,13 @@ if [ "${COMMAND}" == "kafka-kraft" ]; then
 
         echo -e "${cyan_b}Formatting Kafka logs directory: ${CONF_KRAFT_SERVER_log_dirs}${reset_font}";
 
+        if [ -z "${KAFKA_CLUSTER_ID}" ]; then
+            echo -e "${red_b}Cluster ID not specified${reset_font}";
+            exit 2;
+        fi;
+
         # Generate a Cluster UUID
-        KAFKA_CLUSTER_ID="$(${KAFKA_HOME}/bin/kafka-storage.sh random-uuid)";
+        # KAFKA_CLUSTER_ID="$(${KAFKA_HOME}/bin/kafka-storage.sh random-uuid)";
 
         # Format Log Directories
         ${KAFKA_HOME}/bin/kafka-storage.sh format -t $KAFKA_CLUSTER_ID -c ${KAFKA_CONF_DIR}/kraft/server.properties;

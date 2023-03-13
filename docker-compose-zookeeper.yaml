@@ -8,7 +8,6 @@ x-kafka-common:
   # build:
   #   context: .
   #   dockerfile: base.Dockerfile
-  hostname: kafka
   networks:
     - main-network
   env_file:
@@ -21,6 +20,7 @@ services:
   zookeeper:
     <<: *kafka-common
     container_name: zookeeper
+    hostname: zookeeper
     command: zookeeper
     environment:
       CONF_ZOOKEEPER_clientPort: 2181
@@ -40,6 +40,7 @@ services:
   kafka:
     <<: *kafka-common
     container_name: kafka
+    hostname: kafka
     command: kafka
     environment:
       SERVICE_PRECONDITION: "zookeeper:2181"

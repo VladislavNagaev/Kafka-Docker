@@ -22,6 +22,9 @@ services:
       - type: bind
         source: ${APPS_LOGS}/kafka
         target: /tmp/logs
+    environment:
+      # 16 bytes of a base64-encoded UUID
+      KAFKA_CLUSTER_ID: "OiY16813QnOWGJwZ9eX0YQ"
     networks:
       - main-overlay-network
     env_file:
