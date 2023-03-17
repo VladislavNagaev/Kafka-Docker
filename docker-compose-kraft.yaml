@@ -30,6 +30,12 @@ services:
       - main-network
     env_file:
       - ./kafka.env
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     restart: always
 
 
