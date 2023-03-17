@@ -68,6 +68,12 @@ services:
         target: /tmp/logs
     depends_on:
       - zookeeper
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 
 networks:
