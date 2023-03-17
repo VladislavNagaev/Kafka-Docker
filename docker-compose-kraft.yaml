@@ -12,6 +12,8 @@ services:
     container_name: kafka
     hostname: kafka
     command: kafka-kraft
+    labels:
+      autoheal: 'true'
     ports:
       - target: 9092
         published: 9092

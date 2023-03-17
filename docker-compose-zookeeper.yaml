@@ -42,6 +42,8 @@ services:
     container_name: kafka
     hostname: kafka
     command: kafka
+    labels:
+      autoheal: 'true'
     environment:
       SERVICE_PRECONDITION: "zookeeper:2181"
       CONF_SERVER_broker_id: 1
